@@ -42,7 +42,7 @@ npm run preview
 
 The response is a normalized number from `-1` (narrowest) through `0` (unaltered) to `1` (widest), in steps of `0.01`. The numeric value is intentionally not rendered in the participant interface.
 
-`src/config/stimulus.ts` defines `maxWidthDelta`, currently `0.20`. Consequently the endpoints produce a configurable ±20% change relative to the contour's half-width. The renderer changes mesh X coordinates only and resets target Y coordinates to their source values; vertical movement is outside the study invariant.
+`src/config/stimulus.ts` defines `maxWidthDelta`, currently `0.12`. Consequently the selected candidate endpoints produce a configurable ±12% change relative to the contour's half-width. The renderer changes mesh X coordinates only and resets target Y coordinates to their source values; vertical movement is outside the study invariant.
 
 ## Geometry calibration
 
@@ -113,7 +113,7 @@ Automated type-checking and compilation cannot establish perceptual stimulus qua
 2. Inspect widths `-1`, `-0.5`, `0`, `0.5`, and `1`; keyboard arrow keys can place the slider precisely in `0.01` increments.
 3. At each width, inspect both neck contours, jaw transitions, shoulders, clothing, hair, and background for seams, folds, stretching, or discontinuities.
 4. Confirm `0` matches the undeformed source and that deformation is horizontal only, with no vertical image movement.
-5. Confirm the two endpoints remain plausible and represent the intended configurable ±20% default.
+5. Confirm the two endpoints remain plausible and represent the selected configurable ±12% candidate range.
 6. Confirm no numeric width is visible to the participant.
 7. Embed the production build from the configured parent origin; confirm `ready`, `width-change`, and requested `value` messages, then verify messages from an unauthorized origin are ignored.
 8. Record explicit researcher approval of the geometry and all five widths in the study's release documentation. Do not treat a successful build or developer review as research approval.
