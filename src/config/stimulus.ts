@@ -1,5 +1,5 @@
 export const stimulusConfig = {
-  maxWidthDelta: 0.15,
+  maxWidthDelta: 0.12,
   sliderStep: 0.01,
   initialWidth: 0,
 } as const;
