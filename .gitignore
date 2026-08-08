@@ -1,4 +1,7 @@
 node_modules/
 dist/
 *.tsbuildinfo
+<<<<<<< ours
 .vite/
+=======
+>>>>>>> theirs
