@@ -18,7 +18,7 @@ export class NeckRenderer {
   constructor(
     private readonly canvas: HTMLCanvasElement,
     private readonly image: HTMLImageElement,
-    private readonly geometry: StimulusGeometry,
+    private geometry: StimulusGeometry,
   ) {
     this.mesh = createMesh(geometry.mesh.columns, geometry.mesh.rows);
     canvas.addEventListener('webglcontextlost', this.onContextLost);
@@ -28,6 +28,12 @@ export class NeckRenderer {
 
   setDeformation(amount: number): void {
     this.amount = amount;
+    this.requestDraw();
+  }
+
+  /** Replaces geometry while retaining the production WebGL rendering path. */
+  setGeometry(geometry: StimulusGeometry): void {
+    this.geometry = geometry;
     this.requestDraw();
   }
 

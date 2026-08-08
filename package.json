@@ -4,17 +4,10 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-<<<<<<< ours
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview",
-    "typecheck": "tsc -b --pretty false"
-=======
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build",
     "typecheck": "tsc -b --pretty false",
     "preview": "vite preview --host 0.0.0.0"
->>>>>>> theirs
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",
@@ -25,11 +18,7 @@
   },
   "devDependencies": {
     "@types/react": "latest",
-<<<<<<< ours
-    "@types/react-dom": "latest"
-=======
     "@types/react-dom": "latest",
     "playwright": "latest"
->>>>>>> theirs
   }
 }

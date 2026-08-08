@@ -1,20 +1,14 @@
-<<<<<<< ours
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './app/App';
-=======
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App'
-import './styles.css'
->>>>>>> theirs
+import CalibrationApp from './calibration/CalibrationApp';
+
+const parameters = new URLSearchParams(window.location.search);
+const isCalibration = window.location.pathname.replace(/\/$/, '') === '/calibrate'
+  || parameters.get('debug') === '1';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    {isCalibration ? <CalibrationApp /> : <App />}
   </StrictMode>,
-<<<<<<< ours
 );
-=======
-)
->>>>>>> theirs
