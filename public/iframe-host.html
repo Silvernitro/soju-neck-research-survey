@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey iframe protocol host</title>
+    <style>
+      body { margin: 2rem auto; max-width: 900px; padding: 0 1rem; font: 16px system-ui; }
+      iframe { width: 100%; height: 760px; border: 1px solid #bbb; }
+      pre { min-height: 8rem; padding: 1rem; overflow: auto; background: #f4f4f4; }
+    </style>
+  </head>
+  <body>
+    <h1>Survey iframe protocol host</h1>
+    <button id="get-value" type="button">Request current value</button>
+    <pre id="log" aria-live="polite">Waiting for messages…</pre>
+    <iframe id="survey" src="./" title="Neck width survey"></iframe>
+    <script>
+      const survey = document.querySelector('#survey');
+      const log = document.querySelector('#log');
+      window.addEventListener('message', (event) => {
+        if (event.source !== survey.contentWindow || event.origin !== window.location.origin) return;
+        log.textContent += `\n${JSON.stringify(event.data)}`;
+      });
+      document.querySelector('#get-value').addEventListener('click', () => {
+        survey.contentWindow.postMessage(
+          { source: 'parent-survey', type: 'get-value' },
+          window.location.origin,
+        );
+      });
+    </script>
+  </body>
+</html>

@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { stimulusConfig, stimulusUrl } from '../config/stimulus';
+import {
+  clampNormalizedWidth,
+  createIframeMessaging,
+  type IframeMessaging,
+} from '../integration/iframeMessaging';
 import type { StimulusGeometry } from '../renderer/deformMesh';
 import { NeckRenderer } from '../renderer/NeckRenderer';
 import './app.css';
@@ -7,6 +12,8 @@ import './app.css';
 export default function App() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<NeckRenderer | null>(null);
+  const messagingRef = useRef<IframeMessaging | null>(null);
+  const widthRef = useRef<number>(stimulusConfig.initialWidth);
   const [width, setWidth] = useState<number>(stimulusConfig.initialWidth);
   const [status, setStatus] = useState('Loading portrait…');
 
@@ -14,6 +21,9 @@ export default function App() {
     let cancelled = false;
     let observer: ResizeObserver | null = null;
     let onWindowResize: (() => void) | null = null;
+
+    const messaging = createIframeMessaging({ getWidth: () => widthRef.current });
+    messagingRef.current = messaging;
 
     async function setup() {
       try {
@@ -34,6 +44,7 @@ export default function App() {
         onWindowResize = () => renderer.resize();
         window.addEventListener('resize', onWindowResize);
         setStatus('');
+        messaging.sendReady();
       } catch (error) {
         if (!cancelled) setStatus(error instanceof Error ? error.message : 'Unable to load portrait.');
       }
@@ -42,6 +53,8 @@ export default function App() {
     void setup();
     return () => {
       cancelled = true;
+      messaging.dispose();
+      messagingRef.current = null;
       observer?.disconnect();
       if (onWindowResize) window.removeEventListener('resize', onWindowResize);
       rendererRef.current?.dispose();
@@ -82,7 +95,12 @@ export default function App() {
               max="1"
               step={stimulusConfig.sliderStep}
               value={width}
-              onChange={(event) => setWidth(event.currentTarget.valueAsNumber)}
+              onChange={(event) => {
+                const nextWidth = clampNormalizedWidth(event.currentTarget.valueAsNumber);
+                widthRef.current = nextWidth;
+                setWidth(nextWidth);
+                messagingRef.current?.sendWidthChange(nextWidth);
+              }}
             />
             <span aria-hidden="true">Wider</span>
           </div>
